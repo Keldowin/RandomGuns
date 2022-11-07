@@ -11,7 +11,9 @@ via the console and have fun playing on the VIP server
 Commands (*Use only in Deadline cmd on VIP server!!!*)
 -----------
 (add BuildCode GunType) - add gun to randomize
+
 (printguns) - print all guns type
+
 (randomize yourname) - randomize gun if you want
 
 How do I add weapons?
