@@ -17,6 +17,7 @@ Commands (*Use only in Deadline cmd on VIP server!!!*)
 How do I add weapons?
 Open the console and enter (add “Weapon code“ "Weapon model“), so you can add a bunch of weapons
 
+To add this script copy code randomgun.ix and insert in deadline shobfix console (WIP)
 ____
 ### :white_check_mark: This is my first program, if you want to help, write to me in the discord
 Keldowin#5639
