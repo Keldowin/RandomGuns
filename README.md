@@ -1,4 +1,4 @@
-# RandomGuns
+# RandomGuns 1.0
 ____
 Add and play with random weapons in the Deadline game
 Script works only on Deadline VIP server
