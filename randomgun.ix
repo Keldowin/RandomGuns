@@ -1,0 +1,49 @@
+;gun_random 1.0
+;Code write by Keldowin (Peter_ivanovpro)
+
+(var BuildCode [])
+(var GunType [])
+
+
+(print "DEBUG_BuildCode: " BuildCode) ; Debug printing
+(print "DEBUG_GunType: " GunType)
+
+;Функция добавления оружия/The function of adding weapons
+(function add BuildCodeTmp GunTypeTmp
+    (var GunType (append GunTypeTmp GunType))
+    (var BuildCode (append BuildCodeTmp BuildCode))
+    (dl.util.fmessage "Оружие добавленно под номером/Weapon added under the number" (len GunType))
+)
+
+(function printguns
+  (print "M4A1, AK74N, UMP45, PP19, MP5, Remington700, MosinNagant, Glock17, Makarov, Vector, Remington870, MP133")
+)
+
+(function spawned name
+  (var randnumber (rand 0 (len BuildCode)))
+  (var setup (dl.util.read_setup (randnumber BuildCode)))
+  (GiveWeapon name (randnumber GunType) setup)
+)
+
+;Rerandomize weapon function/Заново сгенерировать оружие у игрока
+(function randomize name
+  (var randnumber (rand 0 (len BuildCode)))
+  (var setup (dl.util.read_setup (randnumber BuildCode)))
+  (GiveWeapon name (randnumber GunType) setup)
+)
+
+(function GiveWeapon name type setup
+  ((str "dl.players." name ".set_player_weapon") "primary" type setup) 
+  (dl.util.fmessage "The weapon give to the player/Оружие выдано игроку | " type)
+)
+
+(function sent contents
+    (if (starts? contents "!GunsModels")
+        (dl.util.fmessage "M4A1, AK74N, UMP45, PP19, MP5, Remington700, MosinNagant, Glock17, Makarov, Vector, Remington870, MP133")
+    )
+)
+(dl.events.on_chat_message.connect sent)
+
+(dl.events.on_player_spawned.kill)
+(dl.events.on_player_spawned.connect spawned)
+(dl.util.fmessage "Loaded Insitux GunRandom 1.0 Made by Keldowin (peter_ivanovpro)!")
