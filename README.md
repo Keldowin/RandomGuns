@@ -1,4 +1,4 @@
-# RandomGuns 1.0
+# RandomGuns
 ____
 Add and play with random weapons in the Deadline game
 Script works only on Deadline VIP server
@@ -8,7 +8,7 @@ About Script
 Give out random weapons during spawn that you added in advance 
 via the console and have fun playing on the VIP server
 
-Commands (*Use only in Deadline cmd on VIP server!!!*)
+Commands (*Use only in Deadline console on VIP server!!!*)
 -----------
 (add BuildCode GunType) - add gun to randomize
 
