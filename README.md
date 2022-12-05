@@ -10,9 +10,11 @@ via the console and have fun playing on the VIP server
 
 Commands (*Use only in Deadline console on VIP server!!!*)
 -----------
-(add BuildCode GunType) - add gun to randomize
+(AddGun BuildCodeTmp GunTypeTmp) - add gun to randomize
+(RemoveGun GunListCode) - remove gun
+(randomgunslist) - get list of random guns
 
-(printguns) - print all guns type
+Guns - print all guns type
 
 (randomize yourname) - randomize gun if you want
 
