@@ -1,29 +1,47 @@
-;gun_random 1.0
+;gun_random 1.1
 ;Code write by Keldowin (Peter_ivanovpro)
 
+(var cmds "Examples:
+  \"guns\" - show guns list
+  \"addgun nrel-abcd-1234-45678-123 Guntype\" - add gun in random gun list
+  \"removegun 0\" - remove gun in random gun list
+  \"randomgunslist\" - show all added guns in random list
+  ")
 (var BuildCode [])
 (var GunType [])
-
-
-(print "DEBUG_BuildCode: " BuildCode) ; Debug printing
-(print "DEBUG_GunType: " GunType)
+(var Guns "M4A1, AK74N, UMP45, PP19, MP5, Remington700, MosinNagant, Glock17, Makarov, Vector, Remington870, MP133, SCARH, SCARL, TT33")
+;(var UseScript false) 
+; On or Off script work
 
 ;Функция добавления оружия/The function of adding weapons
-(function add BuildCodeTmp GunTypeTmp
-    (var GunType (append GunTypeTmp GunType))
-    (var BuildCode (append BuildCodeTmp BuildCode))
-    (dl.util.fmessage "Оружие добавленно под номером/Weapon added under the number" (len GunType))
+(function AddGun BuildCodeTmp GunTypeTmp
+  (var GunType (append GunTypeTmp GunType))
+  (var BuildCode (append BuildCodeTmp BuildCode))
+  (fmessage (str "Weapon added under the number" (len GunType)))
+)
+;Функция убирания оружия/The function of removing weapons
+(function RemoveGun GunListCode
+  (var BuildCode (drop GunListCode BuildCode))
+  (var GunType (drop GunListCode GunType))
+  (fmessage (str "The weapon under the number has been removed | " GunListCode))
+)
+; Guns list
+(function randomgunslist
+  (fmessage (str "BuildCode: " BuildCode " GunType: " GunType))
 )
 
-(function printguns
-  (print "M4A1, AK74N, UMP45, PP19, MP5, Remington700, MosinNagant, Glock17, Makarov, Vector, Remington870, MP133")
-)
-
+; Give random weapon on spawen
 (function spawned name
-  (var randnumber (rand 0 (len BuildCode)))
-  (var setup (dl.util.read_setup (randnumber BuildCode)))
+  (var randnumber (rand 0 (len BuildCode))) 
+  (var setup (dl.util.read_setup (randnumber BuildCode))) 
   (GiveWeapon name (randnumber GunType) setup)
 )
+(function done
+    (var randnumber (rand 0 (len BuildCode))) 
+    (var setup (dl.util.read_setup (randnumber BuildCode))) 
+    (GiveWeapon name (randnumber GunType) setup)
+)
+
 
 ;Rerandomize weapon function/Заново сгенерировать оружие у игрока
 (function randomize name
@@ -32,18 +50,56 @@
   (GiveWeapon name (randnumber GunType) setup)
 )
 
+;(function usescript
+;  (var UseScript (! UseScript))
+;  (if (= true UseScript)
+;  (fmessage "Script on!")
+;  (fmessage "Script off!"))
+;)
+
+; Hear commands in chat
+(function command sender msg
+  (var parts (split " " (lower-case msg))
+       [_ b c d] parts)
+  (match parts
+    ["cmds"]             (fmessage cmds)
+    ["guns"]             (fmessage Guns)
+    ["addgun" _ _]       (AddGun b c)
+    ["removegun" _]      (RemoveGun b)
+    ["randomgunslist"]   (randomgunslist)
+    ["randomize" _]      (randomize (n. b))
+    ["usescript"]        (usescript)
+    :not-a-command))
+
+(function on-message sender _ msg
+  (let result (command sender msg)))
+
+;Start Functions
+; Give weapon
 (function GiveWeapon name type setup
   ((str "dl.players." name ".set_player_weapon") "primary" type setup) 
-  (dl.util.fmessage "The weapon give to the player/Оружие выдано игроку | " type)
 )
+; Message in chat
+(function fmessage m (print m) (dl.util.fmessage m))
 
-(function sent contents
-    (if (starts? contents "!GunsModels")
-        (dl.util.fmessage "M4A1, AK74N, UMP45, PP19, MP5, Remington700, MosinNagant, Glock17, Makarov, Vector, Remington870, MP133")
-    )
-)
-(dl.events.on_chat_message.connect sent)
+(function n. name
+  (var n name)
+  (find (fn p (.. starts? (map lower-case [n p])))
+        (alive-players)))
+
+(function alive-players
+  (filter #((str "dl.players." % ".is_alive"))
+          (dl.list_players)))
+
+;End Functions
+
+; Connect events
+(dl.events.on_chat_message.kill)
+(dl.events.on_chat_message.connect on-message)
 
 (dl.events.on_player_spawned.kill)
 (dl.events.on_player_spawned.connect spawned)
-(dl.util.fmessage "Loaded Insitux GunRandom 1.0 Made by Keldowin (peter_ivanovpro)!")
+
+; Start message
+(fmessage "Loaded Insitux GunRandom 1.1 Made by Keldowin (peter_ivanovpro)!")
+
